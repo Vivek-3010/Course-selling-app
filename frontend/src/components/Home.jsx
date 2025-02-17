@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../public/logo.webp";
 import { Link } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
@@ -70,7 +69,7 @@ function Home() {
         <header className="flex items-center justify-between p-6 ">
           <div className="flex items-center space-x-2">
             <img
-              src={logo}
+              src="/logo.webp"
               alt=""
               className="w-7 h-7 md:w-10 md:h-10 rounded-full"
             />
@@ -153,7 +152,7 @@ function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3">
             <div className="flex flex-col items-center md:items-start">
               <div className="flex items-center space-x-2">
-                <img src={logo} alt="" className="w-10 h-10 rounded-full" />
+                <img src="/logo.webp" alt="" className="w-10 h-10 rounded-full" />
                 <h1 className="text-2xl text-orange-500 font-bold">
                   CourseHaven
                 </h1>

@@ -1,47 +1,38 @@
 import React, { useState } from "react";
-import logo from "../../public/logo.webp";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 function Signup() {
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e)=>{
     e.preventDefault();
-
     try {
-      const response = await axios.post(
-        `http://localhost:4001/api/v1//user/signup`,
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await axios.post("http://localhost:4001/api/v1/user/signup",{
+        firstName,
+        lastName,
+        email,
+        password
+      },{
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
         }
-      );
-      console.log("Sugnup successful: ", response.data);
-      toast.success(response.data.message);
-      navigate("/login");
+      })
+      console.log("Signup successful", response.data);
+      alert(response.data.message);
     } catch (error) {
-      if (error.response) {
-        setErrorMessage(error.response.data.errors || "Signup failed!!!");
-      }
+        if(error.response){
+          alert(error.response.data.errors);
+          setErrorMessage(error.response.data.errors || "Signup failed");
+        }
     }
-  };
+  }
 
   return (
     <div className="bg-gradient-to-r from-black to-blue-950 ">
@@ -49,7 +40,7 @@ function Signup() {
         {/* Header */}
         <header className="absolute top-0 left-0 w-full flex justify-between items-center p-5  ">
           <div className="flex items-center space-x-2">
-            <img src={logo} alt="Logo" className="w-10 h-10 rounded-full" />
+            <img src="/logo.webp" alt="Logo" className="w-10 h-10 rounded-full" />
             <Link to={"/"} className="text-xl font-bold text-orange-500">
               CourseHaven
             </Link>
@@ -141,11 +132,7 @@ function Signup() {
                 </span>
               </div>
             </div>
-            {errorMessage && (
-              <div className="mb-4 text-red-500 text-center">
-                {errorMessage}
-              </div>
-            )}
+
             <button
               type="submit"
               className="w-full bg-orange-500 hover:bg-blue-600 text-white py-3 px-6 rounded-md transition"
