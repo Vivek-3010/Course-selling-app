@@ -24,7 +24,8 @@ function Login() {
         }
       })
       console.log("Login successful", response.data);
-      alert(response.data.message);
+      toast.success(response.data.message);
+      localStorage.setItem("user", JSON.stringify(response.data.token));
       navigate("/");
     } catch (error) {
         if(error.response){

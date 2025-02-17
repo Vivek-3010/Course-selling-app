@@ -29,7 +29,7 @@ function Signup() {
         }
       })
       console.log("Signup successful", response.data);
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate("/login");
     } catch (error) {
         if(error.response){

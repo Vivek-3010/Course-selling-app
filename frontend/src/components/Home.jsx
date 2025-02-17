@@ -10,6 +10,30 @@ import Slider from "react-slick";
 import toast from "react-hot-toast";
 function Home() {
   const [courses, setCourses] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(()=>{
+    const token = localStorage.getItem("user");
+    if(token){
+      setIsLoggedIn(true);
+    }
+    else{
+      setIsLoggedIn(false);
+    }
+  }, [])
+  
+  const handleLogout = async ()=>{
+    try {
+      const response = await axios.get(`http://localhost:4001/api/v1/user/logout`, {
+        withCredentials: true,
+      });
+      toast.success((await response).data.message);
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.log("Error in logging out ", error);
+      toast.error((await error).response.data.errors || "Error in logging out");
+    }
+  }
 
   // fetch courses
   useEffect(() => {
@@ -78,7 +102,14 @@ function Home() {
             </h1>
           </div>
           <div className="space-x-4">
-            <Link
+            {isLoggedIn ? (
+              <button onClick={handleLogout}
+              className="bg-transparent text-white text-xs md:text-lg md:py-2 md:px-4 p-2 border border-white rounded"
+              >
+                Logout
+              </button>
+            ) : ( <>
+              <Link
               to={"/login"}
               className="bg-transparent text-white text-xs md:text-lg md:py-2 md:px-4 p-2 border border-white rounded"
             >
@@ -89,7 +120,9 @@ function Home() {
               className="bg-transparent text-white text-xs md:text-lg md:py-2 md:px-4 p-2 border border-white rounded"
             >
               Signup
-                </Link>
+            </Link>
+            </>
+            )}
           </div>
         </header>
 
