@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 function Login() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,33 +11,27 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e)=>{
     e.preventDefault();
-
     try {
-      const response = await axios.post(
-        `http://localhost:4001/api/v1//user/signup/user/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await axios.post("http://localhost:4001/api/v1/user/login",{
+        email,
+        password
+      },{
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
         }
-      );
-      console.log("Login successful: ", response.data);
-      toast.success(response.data.message);
-      localStorage.setItem("user", JSON.stringify(response.data));
+      })
+      console.log("Login successful", response.data);
+      alert(response.data.message);
       navigate("/");
     } catch (error) {
-      if (error.response) {
-        setErrorMessage(error.response.data.errors || "Login failed!!!");
-      }
+        if(error.response){
+          setErrorMessage(error.response.data.errors || "Login failed");
+        }
     }
-  };
+  }
 
   return (
     <div className="bg-gradient-to-r from-black to-blue-950 ">
@@ -65,13 +60,13 @@ function Login() {
           </div>
         </header>
 
-        {/* Login Form */}
+        {/* Signup Form */}
         <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-[500px] m-8 md:m-0 mt-20">
           <h2 className="text-2xl font-bold mb-4 text-center">
             Welcome to <span className="text-orange-500">CourseHaven</span>
           </h2>
           <p className="text-center text-gray-400 mb-6">
-            Log in to access paid content!
+            Login to access paid content!
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -108,11 +103,13 @@ function Login() {
                 </span>
               </div>
             </div>
+
             {errorMessage && (
-              <div className="mb-4 text-red-500 text-center">
+              <div className="mb-4 text-center text-red-500">
                 {errorMessage}
               </div>
             )}
+
             <button
               type="submit"
               className="w-full bg-orange-500 hover:bg-blue-600 text-white py-3 px-6 rounded-md transition"

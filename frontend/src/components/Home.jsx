@@ -150,7 +150,7 @@ function Home() {
         {/* Footer */}
         <footer className="my-12">
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <div className="flex flex-col items-center md:items-start">
+            <div className="flex flex-col items-center md:items-start ml-16">
               <div className="flex items-center space-x-2">
                 <img src="/logo.webp" alt="" className="w-10 h-10 rounded-full" />
                 <h1 className="text-2xl text-orange-500 font-bold">

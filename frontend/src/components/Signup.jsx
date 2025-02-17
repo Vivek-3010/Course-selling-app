@@ -10,6 +10,10 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
+
   const handleSubmit = async (e)=>{
     e.preventDefault();
     try {
@@ -26,9 +30,9 @@ function Signup() {
       })
       console.log("Signup successful", response.data);
       alert(response.data.message);
+      navigate("/login");
     } catch (error) {
         if(error.response){
-          alert(error.response.data.errors);
           setErrorMessage(error.response.data.errors || "Signup failed");
         }
     }
@@ -132,6 +136,12 @@ function Signup() {
                 </span>
               </div>
             </div>
+
+            {errorMessage && (
+              <div className="mb-4 text-center text-red-500">
+                {errorMessage}
+              </div>
+            )}
 
             <button
               type="submit"
