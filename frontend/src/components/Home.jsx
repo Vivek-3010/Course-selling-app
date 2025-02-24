@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -11,29 +12,27 @@ import toast from "react-hot-toast";
 function Home() {
   const [courses, setCourses] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    const token = localStorage.getItem("user");
-    if(token){
-      setIsLoggedIn(true);
-    }
-    else{
-      setIsLoggedIn(false);
-    }
-  }, [])
-  
-  const handleLogout = async ()=>{
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsLoggedIn(user && user.isLoggedIn);
+  }, []);
+
+  const handleLogout = async () => {
     try {
-      const response = await axios.get(`http://localhost:4001/api/v1/user/logout`, {
+      await axios.get("http://localhost:4001/api/v1/user/logout", {
         withCredentials: true,
       });
-      toast.success((await response).data.message);
+      localStorage.removeItem("user"); // Remove user data from localStorage
       setIsLoggedIn(false);
+      toast.success("Logged out successfully");
+      navigate("/login"); // Redirect to login page after logout
     } catch (error) {
       console.log("Error in logging out ", error);
-      toast.error((await error).response.data.errors || "Error in logging out");
+      toast.error(error.response?.data?.errors || "Error in logging out");
     }
-  }
+  };
 
   // fetch courses
   useEffect(() => {
