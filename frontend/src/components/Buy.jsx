@@ -29,7 +29,8 @@ function Buy() {
     } catch (error) {
        setLoading(false);
        if(error?.response?.status === 400){
-         toast.error("You have already purchased these course");
+         toast.error("You have already purchased this course");
+         navigate("/purchases");
        }else{
         toast.error(error.response?.data?.errors || "Error in purchasing course");
        }
